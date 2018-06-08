@@ -23,7 +23,7 @@ Calculates shortest distances between metabolites in a (human) metabolic network
 - ```silhouette.pdf```: for the best clustering (determined above), the Silhouette's index for each individuals and for each cluster.
 - ```pca.pdf```: individuals projection in the two (could be customized) first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion. 
 - ```summary.tsv``` : for each number of clusters, the column contain the bewteen- and the (sum of the ) within inertia, the between-inertia differences with the previous partition, the average silhouette width.
-- ```cluster.tsv``` : in default mode, k column for k clusters with individuals ranked alphabetically. In advanced mode, the first column contains the name of the individuals, the second, the numerical identifier of their cluster, the third and the fourth, their pca coordinates on the first two axis, the last one contains their silhouette's index.
+- ```cluster.tsv``` : the first column contains the name of the individuals (ranked by silhouette's score), the second, the numerical identifier of their cluster, the third and the fourth, their pca coordinates on the first two axis, the last one contains their silhouette's index.
 
 #####Advanced mode 
 - ```elbow.pdf``` : best clustering according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
@@ -69,7 +69,7 @@ docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering -i <
 With optional parameters:
 
 ```
-docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering -i <input_file> [-s <sbml_file>] [-h] [-v] [--verbose] [-q] [--header] [--separator <separator_charachter>] [-t <classif_algorithm_ID>] [--distance <distance_type_ID>] [-m <maximum_clusters_number] [-n clusters_numbers] [--nbAxis <axis_number>]  [-b <boostrap_number>]  [--text] [-adv]
+docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering --infile <input_file> [--sbml <sbml_file>] [--help] [--version] [--verbose] [--quiet] [--header] [--separator <separator_charachter>] [--classifType <classif_algorithm_ID>] [--distance <distance_type_ID>] [--maxClusters <maximum_clusters_number] [--nbClusters clusters_numbers] [--nbAxis <axis_number>] [--text] [--advanced]
 ```
 
 ##### Execution parameters
@@ -91,9 +91,8 @@ docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering -i <
 - ```-m (--maxClusters)``` (INTEGER) number maximum of clusters allowed; by default, 6 clusters (mimimum: 2; maximum: number of row of the dataset).
 - ```-n (--nbClusters)``` (INTEGER) fixed the number of clustering in output (do not take account of Silhouette index; mimimum: 2; maximum: number of row of the dataset).
 - ```--nbAxis``` (INTEGER) number of axis for PCA analysis outputs; by default, 2 axis (minimum: 2; maximum: 4).
-- ```-b (--bootstrap)``` (INTEGER) in advanced mode only, number of bootstrap for gap statistic; by default 500 boostraps (minimum: 100; maximum: 1000).
 - ```--text``` DO NOT prints text on plot.
-- ```-adv (-advanced mode)``` activates advanced mode with more clustering indexes: gap statistics, elbow, agglomerative coefficient, contribution per cluster and contribution per partition (discriminant power), silhouette index and pca first 2 axis for each points. The heatmap will be ordered by silhouette index.
+- ```-a (-advanced mode)``` activates advanced mode with more clustering indexes: gap statistics, elbow, agglomerative coefficient, contribution per cluster and contribution per partition (discriminant power), silhouette index and pca first 2 axis for each points. The heatmap will be ordered by silhouette index.
 
 
 ## References
