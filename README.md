@@ -4,34 +4,39 @@
 Version: 3.1
 
 ## Short description
-Performs unsupervised clustering among a metabolic network from a fingerprint
+Performs unsupervised clustering and automatically determine the best number of cluster
 
 ## Description
-Calculates shortest distances between metabolites in a (human) metabolic network (Recon v2.02). These distances are used by an unsupervised algorithm to classify each metabolites in a given cluster (i.e., sub-network). The optimal number of clusters is determined automatically by the Silhouette's index (Rousseeuw, 1987).
-
+Unsupervised algorithm to classify each individuals (e.g., metabolites) in a optimal number of clusters (i.e., sub-network with common chemical mecanisms). This optimum is determined automatically by the Silhouette's index (Rousseeuw, 1987). This index is based on: a) the average distance of a point to each points of its cluster, b) the average distance with each points of the closest cluster. For a given partitioning, the average width of the silhouette index is calculated on each s(i) = ( b(i) - a(i) ) / max{ a(i), b(i) }. This index vary from 1 (where the individuals are well fitted in their class) to -1 (where they are closer to another cluster). The best partition is determined by the minimum average silhouette width. This tool is part of the MetExplore's project consisting in a web server dedicated to the analysis of omics data in the context of genome scale metabolic networks (Cottret et al., 2018).
 
 ### Input files
-- a ```fingerprint``` (tsv or tabular format): required, composed by at least a column containing identifier values to map on the network file. Multi-mapping (i.e., mapping on different identifier) could be performed if these three kind of values are included each in a separate column. Optionally, this program could filter empty values from a designated column (e.g., non-significant bio-entities after a statistical pre-selection). This tool is part of the MetExplore's project consisting in a web server dedicated to the analysis of omics data in the context of genome scale metabolic networks (Cottret et al., 2018).
-- a ```metabolic network``` (SBML) : optional, by default Recon v2.03 SBML file (without compartments) (Thiele et al., 2013).
+- a ```fingerprint``` (csv or tsv) : the first column should contains the individuals' names (e.g., identifier values to map on a network file), and the other, the variables (e.g., the individuals name in case of a a pseudo-distance matrix between metabolites among a network). Except for the first one, columns with characters values will be discarded from the analysis. "NA" values are not tolerated by the algorithms.
 
 ### Output files
 
 ##### Default mode 
 
-- ```heatmap.pdf``` : distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by silhouette's score.
-- ```optimum_silhouette.pdf```: best clustering according to Silhouette's index (x: number of clusters; y: average width of silhouette).
-- ```silhouette.pdf```: for the best clustering (determined above), the Silhouette's index for each individuals and for each cluster.
-- ```pca.pdf```: individuals projection in the two (could be customized) first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion. 
-- ```summary.tsv``` : for each number of clusters, the column contain the bewteen- and the (sum of the ) within inertia, the between-inertia differences with the previous partition, the average silhouette width.
-- ```cluster.tsv``` : the first column contains the name of the individuals (ranked by silhouette's score), the second, the numerical identifier of their cluster, the third and the fourth, their pca coordinates on the first two axis, the last one contains their silhouette's index.
+- ```heatmap.pdf``` : distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by the Silhouette's score.
+- ```average_silhouette.pdf```: optimal number of clusters according to the average Silhouette's index (x: number of clusters; y: average width of silhouette).
+- ```silhouette.pdf``` : for the optimal number of clusters (determined above), the Silhouette's index for each individuals and for each cluster.
+- ```pca.pdf```: individuals projection in the first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion.
+- ```summary.tsv``` : for each partitioning, the bewteen- and the (sum of the) within-inertia, the between-inertia differences with the previous partition, the average silhouette width.
+- ```clusters.tsv``` : for each individuals, the name of the individuals (ranked by silhouette's score), the numerical identifier of their cluster, their pca coordinates on the first two axis, their silhouette's index.
 
-#####Advanced mode 
-- ```elbow.pdf``` : best clustering according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
-- ```gap.pdf``` : best clustering according to the the gap statistic (see below; x: number of clusters; y: within inertia gap). The best partition is the grater gap statistic in comparison to the gap statistic and its standard deviation from the next partitioning. 
-- ```log_w_diff.pdf``` : differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistic.
-- ```contribution.pdf``` :  contribution of each columns to the inertia of each clusters for the optimal partioning
-- ```discriminant_power.pdf``` :  contribution of each columns to the inertia of each partitioning
-- ```within.tsv``` : within inertia of each clusters of each partioning
+##### Agglomerative hierachical clustering mode (by default)
+
+- ```shepard_graph.pdf``` : correlation between the distance matrix and the agglomerative metric used by the AHC. The squarred correlation is the % of variance of the model. This index is always the best for UPGMA and the worst for Ward. 
+- ```fusion_levels.pdf``` : differences in branch height with the next agglomeration step. The optimal number of clusters should be the largest one.
+- ```dendrogram.pdf``` : agglomerative tree for all paired combinations and the colored chosen clusters.
+
+##### Advanced mode 
+
+- ```elbow.pdf``` : optimal number of clusters according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
+- ```gap_statistics.pdf``` : best clustering according to the the gap statistics (see below; x: number of clusters; y: within inertia gap). The optimal number of clusters is the greater gap statistic in comparison to the gap statistics from the next partitioning and its standard deviation (Tibshirani et al., 2001). 
+- ```log_w_diff.pdf``` : differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistics.
+- ```contribution.pdf``` : contribution of each columns to the inertia of each clusters for the optimal partitioning.
+- ```discriminant_power.pdf``` : contribution of each columns to the inertia of each partitioning.
+- ```within.tsv``` : within-inertia of each clusters for each partioning.
 
 
 ## Key features
@@ -51,7 +56,7 @@ Calculates shortest distances between metabolites in a (human) metabolic network
 - Etienne Camenen (INRA Toulouse)
 
 ## Git Repository
-- https://github.com/phnmnl/container-pathwayEnrichment.git
+- https://github.com/MetExplore/phnmnl-FingerprintClustering.git
 
 ## Installation
 For local installation of the container:
@@ -69,33 +74,31 @@ docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering -i <
 With optional parameters:
 
 ```
-docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering --infile <input_file> [--sbml <sbml_file>] [--help] [--version] [--verbose] [--quiet] [--header] [--separator <separator_charachter>] [--classifType <classif_algorithm_ID>] [--distance <distance_type_ID>] [--maxClusters <maximum_clusters_number] [--nbClusters clusters_numbers] [--nbAxis <axis_number>] [--text] [--advanced]
+docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering --infile <input_file> [--help] [--verbose] [--quiet] [--header] [--separator <separator_charachter>] [--classifType <classif_algorithm_ID>] [--distance <distance_type_ID>] [--maxClusters <maximum_clusters_number] [--nbClusters clusters_numbers] [--nbAxis <axis_number>] [--advanced]
 ```
 
 ##### Execution parameters
 - ```-h (--help)``` print the help.
-- ```-v (--version)``` prints the tool's version.
-- ```--verbose``` activates "super verbose" mode (to survey long run with big data; specify ongoing step).
+- ```-v (--verbose)``` activates "super verbose" mode (to survey long run with big data; specify ongoing step).
 - ```-q (--quiet)``` activates a "quiet" mode (with almost no printing information).
 
 
 ##### Files parameters
-- ```-i (--infile)```, ```-s (-sbml)``` (STRING) specify the inputs files. Only ```-i``` - corresponding to the dataset of fingerprint - is required. ```-s``` - the sbml file where the network is extracted - used Recon2.02 network by default (Thiele et al., 2013).
-- ```--header``` considers first row as header of the columns.
-- ```--separator``` (STRING) specify the character used to separate the column in the fingerprint dataset (e.g., "\t"). By default, the program uses tabulation separators.
+- ```-i (--infile)```(STRING) [REQUIRED] specify the path to the inputs files (dataset of fingerprint).
+- ```-H (--header)``` considers first row as header of the columns.
+- ```-s (--separator)``` (INTEGER) specify the character used to separate the column in the fingerprint dataset (1: tabulation, 2: semicolon) (by default, tabulation).
 
 
 ##### Clustering parameters
-- ```-t (--classifType)``` (INTEGER) type of clustering algorithm among clustering by partition (1: K-medoids 2: K-means) and hierarchical ascendant clustering (3: Ward; 4: Complete links; 5: Single links; 6: UPGMA; 7: WPGMA; 8: WPGMC; 9: UPGMC). By default, the complete links is used.
-- ```--distance``` (INTEGER) type of distance among 1: Euclidian, 2: Manhattan, 3: Jaccard, 4: Sokal & Michener, 5 Sorensen (Dice), 6: Ochiai. By default, euclidean distance is used.
+- ```-t (--classifType)``` (INTEGER) type of clustering algorithm among clustering by partition (1: K-medoids 2: K-means) and ascendant hierarchical clustering (3: Ward; 4: Complete links; 5: Single links; 6: UPGMA; 7: WPGMA; 8: WPGMC; 9: UPGMC). By default, the complete links is used.
+- ```-d (--distance)``` (INTEGER) type of distance among 1: Euclidian, 2: Manhattan, 3: Jaccard, 4: Sokal & Michener, 5 Sorensen (Dice), 6: Ochiai. By default, euclidean distance is used.
 - ```-m (--maxClusters)``` (INTEGER) number maximum of clusters allowed; by default, 6 clusters (mimimum: 2; maximum: number of row of the dataset).
 - ```-n (--nbClusters)``` (INTEGER) fixed the number of clustering in output (do not take account of Silhouette index; mimimum: 2; maximum: number of row of the dataset).
-- ```--nbAxis``` (INTEGER) number of axis for PCA analysis outputs; by default, 2 axis (minimum: 2; maximum: 4).
-- ```--text``` DO NOT prints text on plot.
-- ```-a (-advanced mode)``` activates advanced mode with more clustering indexes: gap statistics, elbow, agglomerative coefficient, contribution per cluster and contribution per partition (discriminant power), silhouette index and pca first 2 axis for each points. The heatmap will be ordered by silhouette index.
+- ```-n (--nbAxis)``` (INTEGER) number of axis for PCA analysis outputs; by default, 2 axis (minimum: 2; maximum: 4).
+- ```-a (--advanced mode)``` activates advanced mode with more clustering indexes: gap statistics, elbow, agglomerative coefficient, silhouette index and pca first 2 axis for each points. The heatmap will be ordered by silhouette index.
 
 
 ## References
-- Thiele I., Swainston N., Fleming R.M.T., et al. (2013). A community-driven global reconstruction of human metabolism. Nature biotechnology 31(5):10. doi:10.1038/nbt.2488.
 - Cottret, L., Frainay, C., Chazalviel, M., et al. (2018). MetExplore: collaborative edition and exploration of metabolic networks. Nucleic acids research, 1.
 - Rousseeuw, P. J. (1987). Silhouettes: a graphical aid to the interpretation and validation of cluster analysis. Journal of computational and applied mathematics, 20, 53-65.
+- Tibshirani, R., Walther, G., & Hastie, T. (2001). Estimating the number of clusters in a data set via the gap statistic. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 63(2), 411-423.

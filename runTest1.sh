@@ -7,16 +7,19 @@
 #Copyright: PhenoMeNal/INRA Toulouse 2018
 
 #Settings files
-OUTFILES=( 'heatmap.pdf' 'optimum_silhouette.pdf' 'silhouette.pdf' 'pca.pdf' 'summary.tsv' 'cluster.tsv' )
+FILE_ERR="false"
+OUTFILES=( 'average_silhouette' 'silhouette' 'pca' 'heatmap' 'summary.tsv' 'clusters.tsv')
+OUTFILES2=( 'removed.tsv' 'summary.tsv' 'clusters.tsv' 'shepard_graph.pdf' 'fusion_levels.pdf' 'dendrogram.pdf' 'within_k.tsv' 'log_w_diff.pdf' 'gap_statistics.pdf' 'elbow.pdf')
 
 #Initialization
-declare -x INFILE FUNC
-declare -i PARAMETER NBFAIL=0 NBTEST=0
+declare -x INFILE FUNC OPAR
+declare -i PARAMETER NBFAIL=0 NBTEST=0 EXIT
 declare -a TESTS
 echo '' > resultRuns.log
 
 setUp(){
     INFILE="matrix.txt"
+    EXIT=0
     FUNC=${FUNCNAME[1]}
     TESTS=()
     printf "\n- ${FUNC}: "
@@ -25,7 +28,10 @@ setUp(){
 tearDown(){
     rm -r temp/
     mkdir temp/
-    [ -f removed.tsv ] && rm removed.tsv
+    for i in `seq 0 $((${#OUTFILES2[@]} -1))`; do
+        [ -f ${OUTFILES2[i]} ] && rm ${OUTFILES2[i]}
+    done
+
 }
 
 ########### ERRORS CATCH ###########
@@ -34,23 +40,28 @@ testError(){
     local BOOLEAN_ERR="false"
     local MSG=""
 
-    [ $1 -ne 0 ] && {
+    [ $1 -ne ${EXIT} ] && {
         MSG=${MSG}"Program exited with bad error code: $1.\n"
         BOOLEAN_ERR="true"
     }
 
-    [ $1 -eq 0 ] && {
+
+     [ ${EXIT} -eq 0 ] && {
+
         for i in ${OUTFILES[@]}; do
-		testFileExist ${i}
-	done
-        MSG=${MSG}"not created.\n"
-        BOOLEAN_ERR="true"
-    }
+	    	testFileExist ${i}
+	    done
+
+	    [ ${FILE_ERR} == "true" ] && {
+           MSG=${MSG}"not created.\n"
+           BOOLEAN_ERR="true"
+        }
+     }
 
     tearDown
 
     [ ${BOOLEAN_ERR} == "true" ] && {
-	    #echo $MSG
+	    echo $MSG
 	    ERRORS=${ERRORS}"\n***************\n##Test \"${TESTS[$2]}\" in $FUNC: \n$MSG"
 	    return 1
     }
@@ -59,7 +70,20 @@ testError(){
 
 
 testFileExist(){
-    [ ! -f $1 ] && MSG=${MSG}"$1 "
+    if [ $1 == "pca" ]; then
+        [ ! -f "temp/pca1-2.pdf" ] && {
+            MSG=${MSG}"$1 "
+            FILE_ERR="true"
+        }
+    elif [ $1 == "summary.tsv" ] || [ $1 == "clusters.tsv" ]; then
+        [ ! -f $1 ] && {
+            MSG=${MSG}"$1 "
+            FILE_ERR="true"
+        }
+    elif [ ! -f "temp/"$1".pdf" ]; then
+        MSG=${MSG}"$1 "
+        FILE_ERR="true"
+    fi
 }
 
 printError(){
@@ -75,16 +99,23 @@ printError(){
 
 run(){
 	printf "\n\n$NBTEST. ${TESTS[$PARAMETER]}\n" >> resultRuns.log 2>&1
-    #java -jar pathwayEnrichment.jar -gal $@
     let NBTEST+=1
     let PARAMETER+=1
-    Rscript  fingerprint_clustering.R -o2 ${OUTFILE1} -o3 ${OUTFILE2} $@ >> resultRuns.log 2>&1
+    Rscript  launcher.R -i ${INFILE} ${O_PAR} $@ >> resultRuns.log 2>&1
 }
 
 getElapsedTime(){
     local END_TIME=$(date -u -d $(date +"%H:%M:%S") +"%s")
     local ELAPSED_TIME=$(date -u -d "0 $END_TIME sec - $1 sec" +"%H:%M:%S")
     echo "Time to run the process ${ELAPSED_TIME:0:2}h ${ELAPSED_TIME:3:2}min ${ELAPSED_TIME:6:2}s"
+}
+
+setOutputPar(){
+    OPAR=""
+    for i in `seq 0 $((${#OUTFILES[@]} -1))`; do
+        let j=${i}+1
+        O_PAR=${O_PAR}"--output"${j}" temp/"${OUTFILES[i]}" "
+    done
 }
 
 ########### TESTS ###########
@@ -97,15 +128,85 @@ test(){
     done
 }
 
-
 testsDefault(){
     setUp
-
-    TESTS=('')
-
+    #TESTS=('')
+    TESTS=('' '-q' '-v' '-a')
     test
 }
 
+testsSep(){
+    setUp
+    TESTS=( '-s 1')
+    test
+}
+
+badTestsSep(){
+    setUp
+    EXIT=1
+    TESTS=( '-s 2')
+    test
+}
+
+testsAlgo(){
+    setUp
+    for i in `seq 1 9`; do
+        TESTS[i]='-t '${i}
+    done
+    test
+}
+
+badTestsAlgo(){
+    setUp
+    EXIT=1
+    TESTS=( '-t 0' '-t 10' )
+    test
+}
+
+testsDist(){
+    setUp
+    for i in `seq 1 6`; do
+        TESTS[i]='-d '${i}
+    done
+    test
+}
+
+badTestsDist(){
+    setUp
+    EXIT=1
+    TESTS=( '-d 0' '-d 7' )
+    test
+}
+
+testsAxis(){
+    setUp
+    for i in `seq 2 4`; do
+        TESTS[i-2]='-N '${i}
+    done
+    test
+}
+
+badTestsAxis(){
+    setUp
+    EXIT=1
+    TESTS=( '-N 0' '-N 1' '-N 5' )
+    test
+}
+
+testsMaxCl(){
+    setUp
+    for i in `seq 3 4`; do
+        TESTS[i-3]='-m '${i}
+    done
+    test
+}
+
+badTestsMaxCl(){
+    setUp
+    EXIT=1
+    TESTS=( '-m 0' '-m 1' '-m 2' '-m 200' )
+    test
+}
 
 ########### MAIN ###########
 
@@ -113,8 +214,19 @@ START_TIME=$(date -u -d $(date +"%H:%M:%S") +"%s")
 #printf "Tests in progress, could take an hour...\n"
 #[ -d bad ] && rm -rf bad/
 mkdir temp/
+setOutputPar
 
 testsDefault
+testsSep
+badTestsSep
+testsAlgo
+badTestsAlgo
+testsDist
+badTestsDist
+testsAxis
+badTestsAxis
+testsMaxCl
+badTestsMaxCl
 
 rm -r temp/
 printf "\n$NBTEST tests, $NBFAIL failed.$ERRORS\n"
