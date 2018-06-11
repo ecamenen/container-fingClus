@@ -94,7 +94,7 @@ docker run docker-registry.phenomenal-h2020.eu/phnmnl/fingerprintclustering --in
 - ```-d (--distance)``` (INTEGER) type of distance among 1: Euclidian, 2: Manhattan, 3: Jaccard, 4: Sokal & Michener, 5 Sorensen (Dice), 6: Ochiai. By default, euclidean distance is used.
 - ```-m (--maxClusters)``` (INTEGER) number maximum of clusters allowed; by default, 6 clusters (mimimum: 2; maximum: number of row of the dataset).
 - ```-n (--nbClusters)``` (INTEGER) fixed the number of clustering in output (do not take account of Silhouette index; mimimum: 2; maximum: number of row of the dataset).
-- ```-n (--nbAxis)``` (INTEGER) number of axis for PCA analysis outputs; by default, 2 axis (minimum: 2; maximum: 4).
+- ```-N (--nbAxis)``` (INTEGER) number of axis for PCA analysis outputs; by default, 2 axis (minimum: 2; maximum: 4).
 - ```-a (--advanced mode)``` activates advanced mode with more clustering indexes: gap statistics, elbow, agglomerative coefficient, silhouette index and pca first 2 axis for each points. The heatmap will be ordered by silhouette index.
 
 

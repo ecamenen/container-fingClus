@@ -208,6 +208,21 @@ badTestsMaxCl(){
     test
 }
 
+testsNbCl(){
+    setUp
+    for i in `seq 2 3`; do
+        TESTS[i-2]='-n '${i}
+    done
+    test
+}
+
+badTestsNbCl(){
+    setUp
+    EXIT=1
+    TESTS=( '-n 0' '-n 1' '-n 200' )
+    test
+}
+
 ########### MAIN ###########
 
 START_TIME=$(date -u -d $(date +"%H:%M:%S") +"%s")
@@ -227,6 +242,8 @@ testsAxis
 badTestsAxis
 testsMaxCl
 badTestsMaxCl
+testsNbCl
+badTestsNbCl
 
 rm -r temp/
 printf "\n$NBTEST tests, $NBFAIL failed.$ERRORS\n"
