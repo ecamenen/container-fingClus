@@ -1,4 +1,4 @@
-![LOGO](Logo_Metexplore.png)
+![LOGO](images/Logo_Metexplore.png)
 # FingerprintClustering
 
 Version: 3.1
@@ -16,26 +16,26 @@ Unsupervised algorithm to classify each individuals (e.g., metabolites) in a opt
 
 ##### Default mode 
 
-- ```heatmap.pdf``` : distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by the Silhouette's score.
-- ```average_silhouette.pdf```: optimal number of clusters according to the average Silhouette's index (x: number of clusters; y: average width of silhouette).
-- ```silhouette.pdf``` : for the optimal number of clusters (determined above), the Silhouette's index for each individuals and for each cluster.
-- ```pca.pdf```: individuals projection in the first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion.
-- ```summary.tsv``` : for each partitioning, the bewteen- and the (sum of the) within-inertia, the between-inertia differences with the previous partition, the average silhouette width.
+![heatmap](/images/heatmap.pdf) Distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by the Silhouette's score.
+![average_silhouette](/images/average_silhouette.pdf) Optimal number of clusters according to the average Silhouette's index (x: number of clusters; y: average width of silhouette).
+![silhouette](/images/silhouette.pdf) For the optimal number of clusters (determined above), the Silhouette's index for each individuals and for each cluster.
+![pca](/images/pca.pdf) Individuals projection in the first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion.
+- ```summary.tsv``` : for each partitioning, the between- and the (sum of the) within-inertia, the between-inertia differences with the previous partition, the average silhouette width.
 - ```clusters.tsv``` : for each individuals, the name of the individuals (ranked by silhouette's score), the numerical identifier of their cluster, their pca coordinates on the first two axis, their silhouette's index.
 
 ##### Agglomerative hierachical clustering mode (by default)
 
-- ```shepard_graph.pdf``` : correlation between the distance matrix and the agglomerative metric used by the AHC. The squarred correlation is the % of variance of the model. This index is always the best for UPGMA and the worst for Ward. 
-- ```fusion_levels.pdf``` : differences in branch height with the next agglomeration step. The optimal number of clusters should be the largest one.
-- ```dendrogram.pdf``` : agglomerative tree for all paired combinations and the colored chosen clusters.
+![shepard_graph](/images/shepard_graph.pdf) Correlation between the distance matrix and the agglomerative metric used by the AHC. The squarred correlation is the % of variance of the model. This index is always the best for UPGMA and the worst for Ward. 
+![fusion_levels](/images/fusion_levels.pdf) Differences in branch height with the next agglomeration step. The optimal number of clusters should be the largest one.
+![dendrogram](/images/dendrogram.pdf) Agglomerative tree for all paired combinations and the colored chosen clusters.
 
 ##### Advanced mode 
 
-- ```elbow.pdf``` : optimal number of clusters according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
-- ```gap_statistics.pdf``` : best clustering according to the the gap statistics (see below; x: number of clusters; y: within inertia gap). The optimal number of clusters is the greater gap statistic in comparison to the gap statistics from the next partitioning and its standard deviation (Tibshirani et al., 2001). 
-- ```log_w_diff.pdf``` : differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistics.
-- ```contribution.pdf``` : contribution of each columns to the inertia of each clusters for the optimal partitioning.
-- ```discriminant_power.pdf``` : contribution of each columns to the inertia of each partitioning.
+![elbow](/images/elbow.pdf) Optimal number of clusters according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
+![gap_statistics](/images/gap_statistics.pdf) Best clustering according to the the gap statistics (see below; x: number of clusters; y: within inertia gap). The optimal number of clusters is the greater gap statistic in comparison to the gap statistics from the next partitioning and its standard deviation (Tibshirani et al., 2001). 
+![log_w_diff](/images/log_w_diff.pdf) Differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistics.
+- ```contribution.tsv``` : contribution of each columns to the inertia of each clusters for the optimal partitioning.
+- ```discriminant_power.tsv``` : contribution of each columns to the inertia of each partitioning.
 - ```within.tsv``` : within-inertia of each clusters for each partioning.
 
 
