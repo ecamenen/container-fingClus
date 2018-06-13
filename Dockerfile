@@ -8,12 +8,12 @@ FROM ubuntu:16.04
 
 MAINTAINER PhenoMeNal-H2020 Project ( phenomenal-h2020-users@googlegroups.com )
 
-ENV TAG_NUMBER 3.1
+ENV TAG_NUMBER 3.2
 ENV SOFT_NAME fingerprint_clustering
 
 LABEL Description="Performs unsupervised clustering and automatically determine the best number of cluster"
 LABEL software.version=$TAG_NUMBER
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL software="FingerprintClustering"
 LABEL website="metexplore.toulouse.inra.fr"
 LABEL tags="Metabolomics"
