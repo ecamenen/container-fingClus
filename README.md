@@ -16,27 +16,57 @@ Unsupervised algorithm to classify each individuals (e.g., metabolites) in a opt
 
 ##### Default mode 
 
-![heatmap](/images/heatmap.pdf) Distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by the Silhouette's score.
-![average_silhouette](/images/average_silhouette.pdf) Optimal number of clusters according to the average Silhouette's index (x: number of clusters; y: average width of silhouette).
-![silhouette](/images/silhouette.pdf) For the optimal number of clusters (determined above), the Silhouette's index for each individuals and for each cluster.
-![pca](/images/pca.pdf) Individuals projection in the first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion.
+- ```heatmap.pdf``` : distance matrix between individuals colored by a gradient of color (from minimal distance, in red, to maximum distance, in blank). In case of hierarchical clustering, the individuals are ranked according to dendrogram result. In case of clustering by partitioning (or in advanced mode), they are ordered by the Silhouette's score.
+![heatmap](/images/heatmap.pdf) 
+- ```average_silhouette.pdf``` : optimal number of clusters according to the average Silhouette's index (x: number of clusters; y: average width of silhouette).
+![average_silhouette](/images/average_silhouette.pdf) 
+- ```silhouette.pdf``` : for the optimal number of clusters (determined above), the Silhouette's index for each individuals and for each cluster.
+![silhouette](/images/silhouette.pdf) 
+- ```pca.pdf``` : individuals projection in the first axis of a PCA. Individuals are colorized according to their belonging to each clusters. Each clusters is represented by a centroid and an elliptical dispersion.
+![pca](/images/pca.pdf) 
 - ```summary.tsv``` : for each partitioning, the between- and the (sum of the) within-inertia, the between-inertia differences with the previous partition, the average silhouette width.
+
+Nb. clusters | Between-inertia (%) | Between-differences (%) | Within-inertia (%) | Silhouette index | Gap | Gap SE
+------------ | ------------------- | ----------------------- | ------------------ | ---------------- | --- | ------
+2 | 38.11 | 38.11 | 61.88 | 0.45 | 0.38 | 0.039
+3 | 48.15 | 10.03 | 51.84 | 0.19 | 0.46 | 0.041
+
 - ```clusters.tsv``` : for each individuals, the name of the individuals (ranked by silhouette's score), the numerical identifier of their cluster, their pca coordinates on the first two axis, their silhouette's index.
+
+Metabolites | Cluster | Silhouette | Axis1 | Axis2
+----------- | ------- | ---------- | ----- | -----
+Reduced glutathione | 1 | 0.56 | 4.60 | -0.17
+L-glutamate(1-) | 1 | 0.56 | 4.67 | 0.92
+D-glucose | 2 | 0.62 | -9.03 | -1.34
+
 
 ##### Agglomerative hierachical clustering mode (by default)
 
-![shepard_graph](/images/shepard_graph.pdf) Correlation between the distance matrix and the agglomerative metric used by the AHC. The squarred correlation is the % of variance of the model. This index is always the best for UPGMA and the worst for Ward. 
-![fusion_levels](/images/fusion_levels.pdf) Differences in branch height with the next agglomeration step. The optimal number of clusters should be the largest one.
-![dendrogram](/images/dendrogram.pdf) Agglomerative tree for all paired combinations and the colored chosen clusters.
+- ```shepard_graph.pdf``` : Correlation between the distance matrix and the agglomerative metric used by the AHC. The squarred correlation is the % of variance of the model. This index is always the best for UPGMA and the worst for Ward. 
+![shepard_graph](/images/shepard_graph.pdf) 
+- ```fusion_levels.pdf``` : Differences in branch height with the next agglomeration step. The optimal number of clusters should be the largest one.
+![fusion_levels](/images/fusion_levels.pdf)  
+- ```dendrogram.pdf``` : Agglomerative tree for all paired combinations and the colored chosen clusters.
+![dendrogram](/images/dendrogram.pdf)
 
 ##### Advanced mode 
 
-![elbow](/images/elbow.pdf) Optimal number of clusters according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
-![gap_statistics](/images/gap_statistics.pdf) Best clustering according to the the gap statistics (see below; x: number of clusters; y: within inertia gap). The optimal number of clusters is the greater gap statistic in comparison to the gap statistics from the next partitioning and its standard deviation (Tibshirani et al., 2001). 
-![log_w_diff](/images/log_w_diff.pdf) Differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistics.
+- ```elbow.pdf``` : Optimal number of clusters according to the between inertia loss per partition (x: number of clusters; y: relative within inertia). 
+![elbow](/images/elbow.pdf) 
+- ```gap_statistics.pdf``` : Best clustering according to the the gap statistics (see below; x: number of clusters; y: within inertia gap). The optimal number of clusters is the greater gap statistic in comparison to the gap statistics from the next partitioning and its standard deviation (Tibshirani et al., 2001). 
+![gap_statistics](/images/gap_statistics.pdf) 
+- ```log_w_diff.pdf``` : Differences between the within-inertia log from the dataset and from a random bootstrap, also called gap statistics.
+![log_w_diff](/images/log_w_diff.pdf) 
 - ```contribution.tsv``` : contribution of each columns to the inertia of each clusters for the optimal partitioning.
+
 - ```discriminant_power.tsv``` : contribution of each columns to the inertia of each partitioning.
+
 - ```within.tsv``` : within-inertia of each clusters for each partioning.
+
+Nb. clusters | Cluster 1 | Cluster 2 | Cluster 3
+------------ | --------- | --------- | ---------
+2 | 0.12 | 0.87 | 
+3 | 0.21 | 0.08 | 0.69
 
 
 ## Key features
@@ -56,7 +86,7 @@ Unsupervised algorithm to classify each individuals (e.g., metabolites) in a opt
 - Etienne Camenen (INRA Toulouse)
 
 ## Git Repository
-- https://github.com/MetExplore/phnmnl-FingerprintClustering.git
+- https://github.com/phnmnl/container-fingerprintClustering.git
 
 ## Installation
 For local installation of the container:

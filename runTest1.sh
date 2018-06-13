@@ -8,8 +8,8 @@
 
 #Settings files
 FILE_ERR="false"
-OUTFILES=( 'average_silhouette' 'silhouette' 'pca' 'heatmap' 'summary.tsv' 'clusters.tsv')
-OUTFILES2=( 'removed.tsv' 'summary.tsv' 'clusters.tsv' 'shepard_graph.pdf' 'fusion_levels.pdf' 'dendrogram.pdf' 'within_k.tsv' 'log_w_diff.pdf' 'gap_statistics.pdf' 'elbow.pdf')
+OUTFILES=( 'average_silhouette.pdf' 'silhouette.pdf' 'pca.pdf' 'heatmap.pdf' 'summary.tsv' 'clusters.tsv')
+OUTFILES2=( 'removed.tsv' 'shepard_graph.pdf' 'fusion_levels.pdf' 'dendrogram.pdf' 'within_k.tsv' 'log_w_diff.pdf' 'gap_statistics.pdf' 'elbow.pdf')
 
 #Initialization
 declare -x INFILE FUNC OPAR
@@ -70,20 +70,11 @@ testError(){
 
 
 testFileExist(){
-    if [ $1 == "pca" ]; then
-        [ ! -f "temp/pca1-2.pdf" ] && {
-            MSG=${MSG}"$1 "
-            FILE_ERR="true"
-        }
-    elif [ $1 == "summary.tsv" ] || [ $1 == "clusters.tsv" ]; then
-        [ ! -f $1 ] && {
-            MSG=${MSG}"$1 "
-            FILE_ERR="true"
-        }
-    elif [ ! -f "temp/"$1".pdf" ]; then
+
+   [ ! -f "temp/"$1 ]  && {
         MSG=${MSG}"$1 "
         FILE_ERR="true"
-    fi
+    }
 }
 
 printError(){
