@@ -46,7 +46,7 @@ testError(){
     }
 
 
-     [ ${EXIT} -eq 0 ] && {
+     [ ${EXIT} -ne 0 ] && {
 
         for i in ${OUTFILES[@]}; do
 	    	testFileExist ${i}
@@ -92,7 +92,7 @@ run(){
 	printf "\n\n$NBTEST. ${TESTS[$PARAMETER]}\n" >> resultRuns.log 2>&1
     let NBTEST+=1
     let PARAMETER+=1
-    Rscript  launcher.R -i ${INFILE} ${O_PAR} $@ >> resultRuns.log 2>&1
+    Rscript  fingerprint_clustering.R -i ${INFILE} ${O_PAR} $@ >> resultRuns.log 2>&1
 }
 
 getElapsedTime(){
