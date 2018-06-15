@@ -46,7 +46,7 @@ testError(){
     }
 
 
-     [ ${EXIT} -ne 0 ] && {
+     [ ${EXIT} -eq 0 ] && {
 
         for i in ${OUTFILES[@]}; do
 	    	testFileExist ${i}

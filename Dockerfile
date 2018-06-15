@@ -27,6 +27,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && apt-get 
 	cd / && rm -rf $SOFT_NAME
 
 ADD runTest1.sh /usr/local/bin/runTest1.sh
-RUN /usr/local/bin/runTest1.sh
 
 ENTRYPOINT ["Rscript", "fingerprint_clustering.R"]
