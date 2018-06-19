@@ -1,7 +1,7 @@
 ![LOGO](images/Logo_Metexplore.png)
 # FingerprintClustering
 
-Version: 1.2
+Version: 1.3
 
 ## Short description
 Performs unsupervised clustering and automatically determine the best number of cluster
@@ -10,7 +10,7 @@ Performs unsupervised clustering and automatically determine the best number of 
 Unsupervised algorithm to classify each individuals (e.g., metabolites) in a optimal number of clusters (i.e., sub-network with common chemical mecanisms). This optimum is determined automatically by the Silhouette's index (Rousseeuw, 1987). This index is based on: a) the average distance of a point to each points of its cluster, b) the average distance with each points of the closest cluster. For a given partitioning, the average width of the silhouette index is calculated on each s(i) = ( b(i) - a(i) ) / max{ a(i), b(i) }. This index vary from 1 (where the individuals are well fitted in their class) to -1 (where they are closer to another cluster). The best partition is determined by the minimum average silhouette width. This tool is part of the MetExplore's project consisting in a web server dedicated to the analysis of omics data in the context of genome scale metabolic networks (Cottret et al., 2018).
 
 ### Input files
-- a ```fingerprint``` (csv or tsv) : the first column should contains the individuals' names (e.g., identifier values to map on a network file), and the other, the variables (e.g., the individuals name in case of a a pseudo-distance matrix between metabolites among a network). Except for the first one, columns with characters values will be discarded from the analysis. "NA" values are not tolerated by the algorithms.
+- a ```fingerprint``` (csv or tsv) : the first column should contains the individuals' names, and the others, the variables (e.g., the individuals name in case of a pseudo-distance matrix between metabolites among a network). Except for the first one, columns with characters values will be discarded from the analysis. "NA" values are not tolerated by the algorithms.
 
 ### Output files
 

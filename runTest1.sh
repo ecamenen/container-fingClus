@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#Script used to perform unitary tests on pathway enrichment tool
+#Script used to perform unitary tests on fingerprint clustering tool
 #
 #Author: E. CAMENEN
 #

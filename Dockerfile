@@ -12,8 +12,8 @@ ENV TAG_NUMBER 3.1.2
 ENV SOFT_NAME fingerprint_clustering
 
 LABEL Description="Performs unsupervised clustering and automatically determine the best number of cluster"
-LABEL software.version=$TAG_NUMBER
-LABEL version="1.2"
+LABEL software.version=3.1.2
+LABEL version=1.3
 LABEL software="FingerprintClustering"
 LABEL website="metexplore.toulouse.inra.fr"
 LABEL tags="Metabolomics"
@@ -27,5 +27,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && apt-get 
 	cd / && rm -rf $SOFT_NAME
 
 ADD runTest1.sh /usr/local/bin/runTest1.sh
+RUN chmod +x /usr/local/bin/runTest1.sh
 
 ENTRYPOINT ["Rscript", "fingerprint_clustering.R"]
