@@ -1,7 +1,7 @@
 ![LOGO](images/Logo_Metexplore.png)
 # FingerprintClustering
 
-Version: 1.3
+Version: 1.4
 
 ## Short description
 Performs unsupervised clustering and automatically determine the best number of cluster
